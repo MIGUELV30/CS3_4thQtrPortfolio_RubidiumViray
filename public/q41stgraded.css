@@ -17,6 +17,8 @@ body{
     font-family: "Comic Sans MS", "Comic Sans";
     background-color: #612bcc;
     display: flex;
+     flex-direction: column; 
+    align-items: center;
     justify-content: center;
     margin-top: 50px;
 }
