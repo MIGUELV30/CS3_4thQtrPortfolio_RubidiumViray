@@ -1,0 +1,10 @@
+.star{
+    font-size:20px;
+    color:gray;
+    cursor:pointer;
+}
+
+.star.active{
+    color:gold;
+}
+
