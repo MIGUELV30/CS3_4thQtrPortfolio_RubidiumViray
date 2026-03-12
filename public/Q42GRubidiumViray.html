@@ -41,9 +41,6 @@
 </form>
 <h3>Movie List</h3>
 <ul id="movieList"></ul>
-
-
-
 <script>
 let rating = 0;
  const stars = document.querySelectorAll(".star");
@@ -70,17 +67,34 @@ let rating = 0;
     const title = document.getElementById("title").value;
     const year = document.getElementById("year").value;
     const genre = document.getElementById("genre").value;
-    const movie = {
+   
+    
+    let movies = JSON.parse(localStorage.getItem("movies")) || [];
+    const movie2 = movies.find(m => m.title.toLowerCase() === title.toLowerCase());
+
+    if (movie2){
+        movie2.genre = genre;
+        movie2.year = year;
+
+        movie2.rating = Math.round((Number(movie2.rating) + Number(rating)) / 2);
+
+    } else {
+        const movie = {
         title: title, 
         year: year, 
         genre: genre, 
         rating: rating
     };
-    let movies = JSON.parse(localStorage.getItem("movies")) || [];
-    movies.push(movie)
+    
+
+    movies.push(movie);
+}
     localStorage.setItem("movies", JSON.stringify(movies));
     
     movielistdisplay();
+
+    form.reset();
+
  });
 
   function movielistdisplay(){
@@ -88,25 +102,35 @@ let rating = 0;
 
     const movies = JSON.parse(localStorage.getItem("movies")) || [];
 
-    movies.forEach(movie => {
+    movies.forEach((movie, index) => {
         const li = document.createElement("li");
 
-        li.textContent =
-       `${movie.title} (${movie.year}) - ${movie.genre}, Rating: ${"★".repeat(movie.rating)} `;
+        li.innerHTML =
+       `${movie.title} (${movie.year}) - ${movie.genre}, Rating: ${"★".repeat(movie.rating)}<button onclick ="deletemovie(${index})">Delete</button>`;
+
 
        addmovielist.appendChild(li);
 
     });
-    
+
 }
+    
+    function deletemovie(index){
+        let deletemessage = confirm("Are you sure you want to delete?");
 
+        if(deletemessage){
+            let movies = JSON.parse(localStorage.getItem("movies")) || [];
+            movies.splice(index,1);
+            localStorage.setItem("movies", JSON.stringify(movies));
+            movielistdisplay();
+        }
+    }
 
+movielistdisplay();
 
+// Sources if needed (Because I feel like some of these were not taught yet (i had to personally research in order to do both graded exercises))
+// https://www.w3schools.com/jsref/prop_html_innerhtml.asp
+// https://www.w3schools.com/jsref/met_node_appendchild.asp 
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
 </script>
 </body>
-
-
-
-
-</html>
-
